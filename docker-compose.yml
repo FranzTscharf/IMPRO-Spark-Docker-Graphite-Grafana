@@ -2,7 +2,6 @@ version: '2'
 services:
   grafana_graphite:
     build: .
-    image: ukc9rtxegfhk9v/impro-spark-docker-graphite-grafana
     container_name: impro-spark-docker-graphite-grafana
     ports:
       - '80:80'
