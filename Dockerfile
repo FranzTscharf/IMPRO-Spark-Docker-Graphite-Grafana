@@ -1,69 +1,57 @@
-FROM        ubuntu:14.04
-MAINTAINER  MariaLysik
-
-# ------------- #
-#   Variables   #
-# ------------- #
-
-ENV DEBIAN_FRONTEND noninteractive
-ENV GRAPHITE_VERSION=1.0.2 \
-    STATS_VERSION=v0.8.0 \
-    TWISTED_VERSION=13.2.0 \
-    GRAFANA_VERSION=4.4.3
+FROM   alpine
 
 # ---------------- #
 #   Installation   #
 # ---------------- #
 
 # Install all prerequisites
-RUN     apt-get update \
-		&& apt-get -y install software-properties-common \
-		&& add-apt-repository -y ppa:chris-lea/node.js \
-		&& apt-get -y update \
-		&& apt-get -y install python-django-tagging python-simplejson python-memcache python-ldap python-cairo python-pysqlite2 python-support \
-			python-pip gunicorn supervisor nginx-light git wget curl openjdk-7-jre build-essential python-dev libffi-dev \
-		&& apt-get autoclean \
-		&& apt-get clean \
-		&& apt-get autoremove
+RUN     apk add --update --no-cache nginx nodejs nodejs-npm git curl wget gcc ca-certificates \
+                                    python-dev py-pip musl-dev libffi-dev cairo supervisor bash \
+                                    py-pyldap py-rrd                                                                 &&\
+        apk --no-cache add ca-certificates wget                                                                      &&\
+        wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub                  &&\
+        wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk                &&\
+        apk add glibc-2.28-r0.apk                                                                                    &&\
+        rm glibc-2.28-r0.apk                                                                                         &&\
+        adduser -D -u 1000 -g 'www' www                                                                              &&\
+        pip install -U pip pytz gunicorn six --no-cache-dir                                                          &&\
+        npm install -g wizzy                                                                                         &&\
+        npm cache clean --force
 
-RUN     pip install Twisted==$TWISTED_VERSION \
-        && pip install pytz
+# Checkout the master branches of Graphite, Carbon and Whisper and install from there
+RUN     mkdir /src                                                                                                   &&\
+        git clone --depth=1 --branch master https://github.com/graphite-project/whisper.git /src/whisper             &&\
+        cd /src/whisper                                                                                              &&\
+        pip install . --no-cache-dir                                                                                 &&\
+        python setup.py install
 
-RUN	curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
-	&& apt-get install -y nodejs \
-	&& npm install -g wizzy
+RUN     git clone --depth=1 --branch master https://github.com/graphite-project/carbon.git /src/carbon               &&\
+        cd /src/carbon                                                                                               &&\
+        pip install . --no-cache-dir                                                                                 &&\
+        python setup.py install
 
-# Checkout the stable branches of Graphite, Carbon and Whisper and install from there
-
-RUN     mkdir -p /src \
-		&& git clone https://github.com/graphite-project/whisper.git /src/whisper \
-		&& cd /src/whisper \
-		&& git checkout $GRAPHITE_VERSION \
-		&& python setup.py install
-
-RUN     git clone https://github.com/graphite-project/carbon.git /src/carbon \
-		&& cd /src/carbon \
-		&& git checkout $GRAPHITE_VERSION \
-		&& python setup.py install
-
-RUN     git clone https://github.com/graphite-project/graphite-web.git /src/graphite-web \
-		&& cd /src/graphite-web \
-		&& git checkout $GRAPHITE_VERSION \
-		&& python setup.py install \
-		&& pip install -r requirements.txt \
-		&& python check-dependencies.py
+RUN     git clone --depth=1 --branch master https://github.com/graphite-project/graphite-web.git /src/graphite-web   &&\
+        cd /src/graphite-web                                                                                         &&\
+        pip install . --no-cache-dir                                                                                 &&\
+        python setup.py install                                                                                      &&\
+        pip install -r requirements.txt --no-cache-dir                                                               &&\
+        python check-dependencies.py
 
 # Install StatsD
-RUN     git clone https://github.com/etsy/statsd.git /src/statsd \
-		&& cd /src/statsd \
-		&& git checkout $STATSD_VERSION
+RUN     git clone --depth=1 --branch master https://github.com/etsy/statsd.git /src/statsd
 
 # Install Grafana
-RUN     mkdir /src/grafana \
-		&& mkdir /opt/grafana \
-		&& wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAFANA_VERSION}.linux-x64.tar.gz -O /src/grafana.tar.gz \
-		&& tar -xzf /src/grafana.tar.gz -C /opt/grafana --strip-components=1 \
-		&& rm /src/grafana.tar.gz
+RUN     mkdir /src/grafana                                                                                           &&\
+        mkdir /opt/grafana                                                                                           &&\
+        curl https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.2.2.linux-amd64.tar.gz  \
+             -o /src/grafana.tar.gz                                                                                  &&\
+        tar -xzf /src/grafana.tar.gz -C /opt/grafana --strip-components=1                                            &&\
+        rm /src/grafana.tar.gz
+
+
+# Cleanup Compile Dependencies
+RUN     apk del --no-cache git curl wget gcc python-dev musl-dev libffi-dev
+
 
 # ----------------- #
 #   Configuration   #
@@ -78,36 +66,37 @@ ADD     ./graphite/local_settings.py /opt/graphite/webapp/graphite/local_setting
 ADD     ./graphite/carbon.conf /opt/graphite/conf/carbon.conf
 ADD     ./graphite/storage-schemas.conf /opt/graphite/conf/storage-schemas.conf
 ADD     ./graphite/storage-aggregation.conf /opt/graphite/conf/storage-aggregation.conf
+RUN     mkdir -p /opt/graphite/storage/whisper                                                                       &&\
+        mkdir -p /opt/graphite/storage/log/webapp                                                                    &&\
+        touch /opt/graphite/storage/log/webapp/info.log                                                              &&\
+        touch /opt/graphite/storage/graphite.db /opt/graphite/storage/index                                          &&\
+        chown -R www /opt/graphite/storage                                                                           &&\
+        chmod 0775 /opt/graphite/storage /opt/graphite/storage/whisper                                               &&\
+        chmod 0664 /opt/graphite/storage/graphite.db                                                                 &&\
+        cp /src/graphite-web/webapp/manage.py /opt/graphite/webapp                                                   &&\
+        cd /opt/graphite/webapp/ && python manage.py migrate --run-syncdb --noinput
 
-RUN     mkdir -p /opt/graphite/storage/whisper \
-		&& touch /opt/graphite/storage/graphite.db /opt/graphite/storage/index \
-		&& chown -R www-data /opt/graphite/storage \
-		&& chmod 0775 /opt/graphite/storage /opt/graphite/storage/whisper \
-		&& chmod 0664 /opt/graphite/storage/graphite.db \
-		&& cp /src/graphite-web/webapp/manage.py /opt/graphite/webapp \
-		&& cd /opt/graphite/webapp/ \
-		&& python manage.py migrate --run-syncdb --noinput
-
-# Configure Grafana
+# Configure Grafana and wizzy
 ADD     ./grafana/custom.ini /opt/grafana/conf/custom.ini
+RUN     cd /src                                                                                                      &&\
+        wizzy init                                                                                                   &&\
+        extract() { cat /opt/grafana/conf/custom.ini | grep $1 | awk '{print $NF}'; }                                &&\
+        wizzy set grafana url $(extract ";protocol")://$(extract ";domain"):$(extract ";http_port")                  &&\
+        wizzy set grafana username $(extract ";admin_user")                                                          &&\
+        wizzy set grafana password $(extract ";admin_password")
 
-RUN	cd /src \
-	&& wizzy init \
-	&& extract() { cat /opt/grafana/conf/custom.ini | grep $1 | awk '{print $NF}'; } \
-	&& wizzy set grafana url $(extract ";protocol")://$(extract ";domain"):$(extract ";http_port")	\		
-	&& wizzy set grafana username $(extract ";admin_user")	\
-	&& wizzy set grafana password $(extract ";admin_password")
-
-# Add the default dashboards
-RUN 	mkdir /src/datasources \
-		&& mkdir /src/dashboards
-ADD	    ./grafana/datasources/* /src/datasources
+# Add the default datasource and dashboards
+RUN 	mkdir /src/datasources                                                                                       &&\
+        mkdir /src/dashboards
+ADD     ./grafana/datasources/* /src/datasources
 ADD     ./grafana/dashboards/* /src/dashboards/
 ADD     ./grafana/export-datasources-and-dashboards.sh /src/
 
 # Configure nginx and supervisord
 ADD     ./nginx/nginx.conf /etc/nginx/nginx.conf
-ADD     ./supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN     mkdir /var/log/supervisor
+ADD     ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 
 # ---------------- #
 #   Expose Ports   #
@@ -116,24 +105,21 @@ ADD     ./supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Grafana
 EXPOSE  80
 
-# Graphite
-EXPOSE 2003
-
 # StatsD UDP port
 EXPOSE  8125/udp
 
 # StatsD Management port
 EXPOSE  8126
 
-# Elasticsearch data storage path: /var/lib/elasticsearch
-# Graphite data storage path: /opt/graphite/storage/whipsper
-# Graphite log path: /opt/graphite/storage/log
-# Graphite conf path: /opt/graphite/conf
-# Supervisor log path: /var/log/supervisor
-# VOLUME  ["/var/lib/elasticsearch", "/opt/graphite/storage/whisper", "/opt/graphite/storage/log", "/opt/graphite/conf", "/var/log/supervisor"]
+# Graphite web port
+EXPOSE 81
+
+# Graphite Carbon port
+EXPOSE 2003
+
 
 # -------- #
 #   Run!   #
 # -------- #
 
-CMD     ["/usr/bin/supervisord"]
+CMD     ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
