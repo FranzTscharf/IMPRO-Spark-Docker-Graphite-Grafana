@@ -1,4 +1,5 @@
 FROM   alpine
+
 # Install all prerequisites
 RUN     apk add --update --no-cache nginx nodejs nodejs-npm git curl wget gcc ca-certificates \
                                     python-dev py-pip musl-dev libffi-dev cairo supervisor bash \

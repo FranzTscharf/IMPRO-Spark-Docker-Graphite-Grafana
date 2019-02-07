@@ -2,8 +2,8 @@ version: '2'
 services:
   grafana_graphite:
     build: .
-    image: kamon/grafana_graphite
-    container_name: kamon-grafana-dashboard
+    image: ukc9rtxegfhk9v/impro-spark-docker-graphite-grafana
+    container_name: impro-spark-docker-graphite-grafana
     ports:
       - '80:80'
       - '81:81'
