@@ -336,3 +336,47 @@ Starting carbon-cache (instance a)
 07/02/2019 16:37:21 :: [console] Sorted 32 cache queues in 0.000063 seconds
 07/02/2019 16:37:22 :: [tagdb] Tagging stats.counters.statsd.packets_received.rate
 07/02/2019 16:37:22 :: [tagdb] Error tagging stats.counters.statsd.packets_received.rate: Error response 404 from http://127.0.0.1:80/tags/tagMultiSeries
+07/02/2019 16:37:31 :: [listener] MetricLineReceiver connection with 127.0.0.1:37676 established
+07/02/2019 16:37:31 :: [listener] MetricLineReceiver connection with 127.0.0.1:37676 closed cleanly
+07/02/2019 16:37:31 :: [console] Queue consumed in 9.263549 seconds
+07/02/2019 16:37:31 :: [console] Sorted 14 cache queues in 0.000047 seconds
+07/02/2019 16:37:41 :: [listener] MetricLineReceiver connection with 127.0.0.1:37678 established
+07/02/2019 16:37:41 :: [listener] MetricLineReceiver connection with 127.0.0.1:37678 closed cleanly
+07/02/2019 16:37:41 :: [console] Queue consumed in 10.127066 seconds
+07/02/2019 16:37:41 :: [console] Sorted 14 cache queues in 0.000201 seconds
+07/02/2019 16:37:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37680 established
+07/02/2019 16:37:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37682 established
+07/02/2019 16:37:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37680 closed cleanly
+07/02/2019 16:37:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37682 closed cleanly
+07/02/2019 16:37:51 :: [console] Queue consumed in 10.086051 seconds
+07/02/2019 16:37:51 :: [console] Sorted 14 cache queues in 0.000031 seconds
+07/02/2019 16:38:01 :: [listener] MetricLineReceiver connection with 127.0.0.1:37684 established
+07/02/2019 16:38:01 :: [listener] MetricLineReceiver connection with 127.0.0.1:37684 closed cleanly
+07/02/2019 16:38:01 :: [console] Queue consumed in 10.104958 seconds
+07/02/2019 16:38:01 :: [console] Sorted 14 cache queues in 0.000049 seconds
+07/02/2019 16:38:11 :: [listener] MetricLineReceiver connection with 127.0.0.1:37686 established
+07/02/2019 16:38:11 :: [listener] MetricLineReceiver connection with 127.0.0.1:37686 closed cleanly
+07/02/2019 16:38:11 :: [console] Queue consumed in 10.113055 seconds
+07/02/2019 16:38:11 :: [console] Sorted 14 cache queues in 0.000045 seconds
+07/02/2019 16:38:20 :: [listener] MetricLineReceiver connection with 127.0.0.1:37688 established
+07/02/2019 16:38:20 :: [listener] MetricLineReceiver connection with 127.0.0.1:37688 closed cleanly
+07/02/2019 16:38:21 :: [listener] MetricLineReceiver connection with 127.0.0.1:37690 established
+07/02/2019 16:38:21 :: [listener] MetricLineReceiver connection with 127.0.0.1:37690 closed cleanly
+07/02/2019 16:38:21 :: [console] Queue consumed in 10.063114 seconds
+07/02/2019 16:38:21 :: [console] Sorted 32 cache queues in 0.000048 seconds
+07/02/2019 16:38:22 :: [tagdb] Tagging carbon.agents.6e9d02ca2295-a.droppedCreates
+07/02/2019 16:38:22 :: [tagdb] Error tagging carbon.agents.6e9d02ca2295-a.droppedCreates: Error response 404 from http://127.0.0.1:80/tags/tagMultiSeries
+07/02/2019 16:38:31 :: [listener] MetricLineReceiver connection with 127.0.0.1:37694 established
+07/02/2019 16:38:31 :: [listener] MetricLineReceiver connection with 127.0.0.1:37694 closed cleanly
+07/02/2019 16:38:31 :: [console] Queue consumed in 10.268105 seconds
+07/02/2019 16:38:31 :: [console] Sorted 14 cache queues in 0.000045 seconds
+07/02/2019 16:38:41 :: [listener] MetricLineReceiver connection with 127.0.0.1:37696 established
+07/02/2019 16:38:41 :: [listener] MetricLineReceiver connection with 127.0.0.1:37696 closed cleanly
+07/02/2019 16:38:41 :: [console] Queue consumed in 9.105319 seconds
+07/02/2019 16:38:41 :: [console] Sorted 14 cache queues in 0.000042 seconds
+07/02/2019 16:38:50 :: [listener] MetricLineReceiver connection with 127.0.0.1:37698 established
+07/02/2019 16:38:50 :: [listener] MetricLineReceiver connection with 127.0.0.1:37698 closed cleanly
+07/02/2019 16:38:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37700 established
+07/02/2019 16:38:51 :: [listener] MetricLineReceiver connection with 127.0.0.1:37700 closed cleanly
+07/02/2019 16:38:51 :: [console] Queue consumed in 10.072795 seconds
+07/02/2019 16:38:51 :: [console] Sorted 14 cache queues in 0.000044 seconds
