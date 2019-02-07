@@ -1,0 +1,28 @@
+Output:
+{"datasource":{"id":1,"orgId":1,"name":"Local Graphite","type":"graphite","typeLogoUrl":"","access":"proxy","url":"http://localhost:8000","password":"","user":"","database":"","basicAuth":false,"basicAuthUser":"","basicAuthPassword":"","withCredentials":false,"isDefault":true,"secureJsonFields":{},"version":1,"readOnly":false},"id":1,"message":"Datasource added","name":"Local Graphite"}
+✔ Datasource local-graphite exported successfully.
+✔ 1 datasources exported successfully.
+Output:
+{"id":1,"slug":"docker","status":"success","uid":"P8a3GSXmz","url":"/d/P8a3GSXmz/docker","version":1}
+✔ Dashboard docker exported successfully.
+Output:
+{"id":2,"slug":"kamon-dashboard","status":"success","uid":"3Xa3GIuik","url":"/d/3Xa3GIuik/kamon-dashboard","version":1}
+✔ Dashboard kamon-dashboard exported successfully.
+Output:
+{"id":3,"slug":"system-metrics","status":"success","uid":"rq-qGSXmk","url":"/d/rq-qGSXmk/system-metrics","version":1}
+✔ Dashboard system-metrics exported successfully.
+✔ 3 dashboards exported successfully.
+Output:
+{"datasource":{"id":1,"orgId":1,"name":"Local Graphite","type":"graphite","typeLogoUrl":"","access":"proxy","url":"http://localhost:8000","password":"","user":"","database":"","basicAuth":false,"basicAuthUser":"","basicAuthPassword":"","withCredentials":false,"isDefault":true,"secureJsonFields":{},"version":1,"readOnly":false},"id":1,"message":"Datasource updated","name":"Local Graphite"}
+✔ Datasource local-graphite exported successfully.
+✔ 1 datasources exported successfully.
+Output:
+{"id":1,"slug":"docker","status":"success","uid":"P8a3GSXmz","url":"/d/P8a3GSXmz/docker","version":2}
+✔ Dashboard docker exported successfully.
+Output:
+{"id":2,"slug":"kamon-dashboard","status":"success","uid":"3Xa3GIuik","url":"/d/3Xa3GIuik/kamon-dashboard","version":2}
+✔ Dashboard kamon-dashboard exported successfully.
+Output:
+{"id":3,"slug":"system-metrics","status":"success","uid":"rq-qGSXmk","url":"/d/rq-qGSXmk/system-metrics","version":2}
+✔ Dashboard system-metrics exported successfully.
+✔ 3 dashboards exported successfully.
