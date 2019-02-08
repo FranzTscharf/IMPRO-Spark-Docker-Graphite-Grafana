@@ -1,16 +1,25 @@
 version: '2'
 services:
-  grafana_graphite:
-    build: .
-    container_name: kamon-grafana-dashboard
+  graphite:
+    image: 'graphiteapp/graphite-statsd'
+    container_name: graphite
+    restart: always
     ports:
-      - '80:80'
-      - '81:81'
+      - '81:80'
       - '8125:8125/udp'
       - '8126:8126'
       - '2003:2003'
+      - '2024:2024'
+      - '2004:2004'
+      - '2023:2023'
     volumes:
       - ./data/whisper:/opt/graphite/storage/whisper
-      - ./data/grafana:/opt/grafana/data
       - ./log/graphite:/opt/graphite/storage/log
       - ./log/supervisor:/var/log/supervisor
+  grafana:
+    build: .
+    container_name: grafana
+    ports:
+      - '80:3000'
+    volumes:
+      - ./data/grafana:/opt/grafana/data
