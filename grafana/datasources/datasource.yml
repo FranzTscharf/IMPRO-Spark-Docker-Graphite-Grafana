@@ -3,14 +3,14 @@ apiVersion: 1
 
 # list of datasources that should be deleted from the database
 deleteDatasources:
-  - name: Graphite
+  - name: Local Graphite
     orgId: 1
 
 # list of datasources to insert/update depending
 # what's available in the database
 datasources:
   # <string, required> name of the datasource. Required
-- name: Graphite
+- name: Local Graphite
   # <string, required> datasource type. Required
   type: graphite
   # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
