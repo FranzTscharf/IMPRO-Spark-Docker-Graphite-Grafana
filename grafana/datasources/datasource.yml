@@ -20,9 +20,9 @@ datasources:
   # <string> url
   url: http://localhost:81
   # <string> database password, if used
-  password:
+  password: root
   # <string> database user, if used
-  user:
+  user: root
   # <string> database name, if used
   database:
   # <bool> enable/disable basic auth
@@ -34,7 +34,7 @@ datasources:
   # <bool> enable/disable with credentials headers
   withCredentials:
   # <bool> mark as default datasource. Max one per org
-  isDefault:
+  isDefault: true
   # <map> fields that will be converted to json and stored in jsonData
   jsonData:
      graphiteVersion: "1.1"
