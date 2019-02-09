@@ -1,6 +1,5 @@
 FROM grafana/grafana
 USER root
-ARG NODE_V_PUBLIC_IP
 # Add the default dashboards
 ADD	    ./grafana/datasources/* /etc/grafana/provisioning/datasources/
 ADD     ./grafana/dashboards/* /etc/grafana/provisioning/dashboards/

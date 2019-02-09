@@ -17,10 +17,7 @@ services:
       - ./log/graphite:/opt/graphite/storage/log
       - ./log/supervisor:/var/log/supervisor
   grafana:
-    build:
-        context: .
-        args:
-          - NODE_V_PUBLIC_IP=${NODE_V_PUBLIC_IP}
+    build: .
     container_name: grafana
     user: root
     ports:
