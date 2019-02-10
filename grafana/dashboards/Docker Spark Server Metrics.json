@@ -16,8 +16,7 @@
   "editable": true,
   "gnetId": 24,
   "graphTooltip": 1,
-  "id": 2,
-  "iteration": 1549722084925,
+  "iteration": 1549723409762,
   "links": [],
   "panels": [
     {
@@ -311,7 +310,7 @@
       "targets": [
         {
           "refId": "A",
-          "target": "sumSeries($prefix.$server.users.users)"
+          "target": "aggregate($prefix.spark_master_1_.users.users, 'count')"
         }
       ],
       "thresholds": "",
@@ -1382,6 +1381,7 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
+          "tags": [],
           "text": "All",
           "value": "$__all"
         },
@@ -1410,11 +1410,12 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "tags": [],
+          "text": "app-20190209145912-0000",
+          "value": "app-20190209145912-0000"
         },
         "datasource": "Local Graphite",
-        "definition": "",
+        "definition": "spark.*",
         "hide": 0,
         "includeAll": true,
         "label": "Application",
